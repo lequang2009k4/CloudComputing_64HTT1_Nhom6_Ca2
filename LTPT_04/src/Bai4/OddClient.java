@@ -20,7 +20,7 @@ public class OddClient {
             }
             System.out.println();
 
-            OddService oddService = (OddService) Naming.lookup("rmi://192.168.1.7:1099/OddService");
+            OddService oddService = (OddService) Naming.lookup("rmi://192.168.135.72:1099/OddService");
             // Naming.lookup tìm và lấy đối tượng đã đăng ký từ xa 
             int[] odds = oddService.findOdds(clientArray);
 

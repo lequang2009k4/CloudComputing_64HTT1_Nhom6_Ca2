@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDUSCAN</title>
+  <!-- SEO & Social Meta -->
+  <meta name="description" content="EDUSCAN – Số hóa học bạ, phân tích học lực và tư vấn hướng nghiệp cho học sinh và giáo viên.">
+  <meta property="og:title" content="EDUSCAN">
+  <meta property="og:description" content="Tự động quét học bạ, phân tích điểm số, chatbot tư vấn học lực và gửi email báo cáo.">
+  <meta property="og:image" content="/images/og-image.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/favicon.ico">
+  <!-- AOS for scroll animations -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #0072ff;
+      --secondary: #00c6ff;
+      --text: #2d3748;
+      --bg-card: rgba(255,255,255,0.95);
+      --light: #f7fafc;
+      --border: #e2e8f0;
+    }
+    :root.dark {
+      --bg-card: #1a202c;
+      --text: #e2e8f0;
+      --light: #2d3748;
+      background: #111827;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg,#e0f7fa,#bbdefb);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 1rem;
+      transition: background .3s, color .3s;
+    }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .container { max-width: 960px; margin: auto; }
+
+    /* ===== Navbar nâng cao ===== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 100;
+    }
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .5rem 1rem;
+    }
+    .nav-logo img {
+      height: 40px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+    .nav-list {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+    }
+    .nav-list li { margin: 0; }
+    .nav-list a {
+      color: #fff;
+      font-weight: 500;
+      padding: .5rem .75rem;
+      border-radius: 4px;
+      transition: background .3s;
+      display: block;
+    }
+    .nav-list a:hover { background: rgba(255,255,255,0.2); }
+
+    .nav-toggle {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: none;
+    }
+    @media (max-width:768px) {
+      .nav-list {
+        position: absolute;
+        top: 100%;
+        right: 1rem;
+        background: var(--primary);
+        flex-direction: column;
+        display: none;
+        border-radius:8px;
+        overflow: hidden;
+      }
+      .nav-list.show { display: flex; }
+      .nav-list a { padding: .75rem 1rem; }
+      .nav-toggle { display: block; }
+    }
+    /* ===== END Navbar ===== */
+
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,114,255,0.1);
+      text-align: center;
+      margin-bottom: 2rem;
+      transition: transform .3s;
+    }
+    .card:hover { transform: translateY(-4px); }
+    .logo { width: 130px; height: 130px; object-fit: contain; margin-bottom: 1rem; animation: float 3s ease-in-out infinite; }
+    .slogan { font-size: 1rem; color: #4a5568; margin-bottom: 1.5rem; }
+    .cta-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 600;
+      transition: 0.3s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: linear-gradient(to right,var(--secondary),var(--primary));
+      color: #fff;
+    }
+    .btn-secondary {
+      background: #fff;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,114,255,0.2); }
+
+    /* Sections */
+    section { background: var(--bg-card); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--border); transition: transform .3s; }
+    section:hover { transform: translateY(-2px); }
+
+    /* Wave divider */
+    .wave-divider svg { display: block; width: 100%; height: 60px; margin-bottom: -4px; }
+
+    /* Screenshots */
+     .screenshots {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .screenshot-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .screenshot-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: transform .3s;
+    }
+    .screenshot-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    .screenshot-card figcaption {
+      padding: .75rem;
+      font-size: .9rem;
+      text-align: center;
+      color: var(--text);
+      background: var(--light);
+    }
+    @media (max-width: 600px) {
+      .screenshots {
+        grid-template-columns: 1fr;
+      }
+    }
+    .screenshots img { max-width: 100%; border-radius: 8px; margin-bottom: 0.5rem; transition: transform .3s, filter .3s; }
+    .screenshots img:hover { transform: scale(1.02); filter: brightness(1.05); }
+
+    /* Feature icons */
+    .features-icons li { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+    .features-icons i { color: var(--primary); font-size: 1.2rem; }
+
+    /* FAQ */
+    .faq details { margin-bottom: 0.75rem; }
+
+    /* Theme toggle */
+    #theme-toggle {
+        position: fixed;
+  bottom: 1.5rem;   /* di chuyển xuống dưới */
+  left: 1.5rem;     /* giữ vào sát trái */
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: .5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 200;
+    }
+    /* Back to top */
+    #backToTop {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      background: var(--primary); color: #fff;
+      border:none; padding: .75rem; border-radius:50%;
+      cursor:pointer; display:none; z-index: 200;
+    }
+    #backToTop.show { display:block; }
+
+    /* Testimonials */
+    #testimonials blockquote {
+      background: var(--light); padding:1rem; border-radius:8px; margin-bottom:1rem; position:relative;
+    }
+    #testimonials blockquote:before {
+      content: "\f10d"; font-family: "Font Awesome 6 Free"; font-weight:900;
+      position:absolute; top:-10px; left:-10px; color:var(--primary); font-size:2rem;
+    }
+    #testimonials cite { display:block; margin-top:.5rem; text-align:right; font-size:.9rem; color:#555; }
+
+    footer { text-align: center; font-size: 0.8rem; color: #718096; margin-top: 2rem; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)} }
+    
+  </style>
+</head>
+<body>
+  <!-- Theme toggle -->
+  <button id="theme-toggle">🌙</button>
+  <!-- Back to top -->
+  <button id="backToTop">↑</button>
+
+  <!-- Navbar -->
+  <header class="navbar" data-aos="fade-down">
+    <div class="container nav-container">
+      <a href="/" class="nav-logo">
+        <img src="http://edu-teacher.quanglv.com/wp-content/uploads/2025/05/Icon-EDUSCAN-e1748087833931.png" alt="EDUSCAN">
+      </a>
+      <ul class="nav-list">
+        <li><a href="#intro">Giới thiệu</a></li>
+        <li><a href="#features">Tính năng</a></li>
+        <li><a href="#screenshots">Ảnh</a></li>
+        <li><a href="#guide">Hướng dẫn</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#testimonials">Phản hồi</a></li>
+        <li><a href="#contact">Liên hệ</a></li>
+      </ul>
+      <button id="nav-toggle" class="nav-toggle">☰</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Hero Card -->
+    <div class="card" data-aos="zoom-in">
+      <img src="http://edu-teacher.quanglv.com/wp-content/uploads/2025/05/Icon-EDUSCAN-e1748087833931.png" class="logo" alt="EDUSCAN">
+      <p class="slogan">Số hóa học bạ, kết nối tri thức, nâng bước tương lai</p>
+      <div class="cta-buttons">
+        <a href="javascript:void(0)" onclick="openApp()" class="btn btn-primary">Vào Ứng Dụng</a>
+        <a href="https://drive.google.com/file/d/15jFB7RsvfatjrM4Vhot8ZpZjGuzdi3CG/view?usp=sharing" class="btn btn-secondary">Tải Android</a>
+        <a href="#" class="btn btn-secondary">Tải iOS</a>
+      </div>
+    </div>
+
+    <!-- Giới thiệu -->
+    <section id="intro" data-aos="fade-up">
+      <h2>Giới thiệu</h2>
+      <p>EDUSCAN là nền tảng thông minh tích hợp OCR và AI, giúp giáo viên và học sinh tự động hóa quá trình số hóa học bạ, phân tích học lực và tư vấn hướng nghiệp. Ứng dụng sử dụng công nghệ YOLOv8, PaddleOCR, BARTPho và LLM để đảm bảo độ chính xác cao.</p>
+    </section>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,0 C600,100 600,0 1200,100 L1200,0 L0,0 Z" fill="var(--light)"/></svg>
+    </div>
+
+    <!-- Tính năng chính -->
+    <section id="features" data-aos="fade-up">
+      <h2>Tính năng chính</h2>
+      <ul class="features-icons">
+        <li><i class="fa fa-camera"></i> Quét học bạ tự động từ ảnh</li>
+        <li><i class="fa fa-pen"></i> Sửa lỗi văn bản sau OCR</li>
+        <li><i class="fa fa-robot"></i> Chatbot tư vấn học lực</li>
+        <li><i class="fa fa-envelope"></i> Gửi email báo cáo phụ huynh</li>
+        <li><i class="fa fa-chart-line"></i> Thống kê & phân tích điểm</li>
+      </ul>
+    </section>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,0 C600,100 600,0 1200,100 L1200,0 L0,0 Z" fill="var(--light)"/></svg>
+    </div>
+
+    <!-- Ảnh minh họa -->
+  <section id="screenshots" data-aos="fade-up">
+    <h2>Giao diện ứng dụng</h2>
+    <div class="screenshots">
+      <figure class="screenshot-card">
+        <img src="./trangchu.png" alt="Trang chủ ứng dụng EDUSCAN">
+        <figcaption>Trang chủ ứng dụng</figcaption>
+      </figure>
+      <figure class="screenshot-card">
+        <img src="./quethb.png" alt="Chức năng quét học bạ">
+        <figcaption>Chức năng quét học bạ</figcaption>
+      </figure>
+      <figure class="screenshot-card">
+        <img src="./xemhocba.png" alt="Xem bảng điểm">
+        <figcaption>Xem bảng điểm trực quan</figcaption>
+      </figure>
+      <figure class="screenshot-card">
+        <img src="./chatbot.png" alt="Chatbot tư vấn học lực">
+        <figcaption>Chatbot tư vấn học lực</figcaption>
+      </figure>
+    </div>
+  </section>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,0 C600,100 600,0 1200,100 L1200,0 L0,0 Z" fill="var(--light)"/></svg>
+    </div>
+
+    <!-- Hướng dẫn sử dụng -->
+    <section id="guide" data-aos="fade-up">
+      <h2>Hướng dẫn sử dụng</h2>
+      <ol>
+        <li>Đăng nhập bằng email hoặc Google.</li>
+        <li>Chọn “Quét học bạ”, chụp hoặc tải ảnh học bạ.</li>
+        <li>Kiểm tra OCR, chỉnh sửa nếu cần, “Lưu học bạ”.</li>
+        <li>Vào “Xem bảng điểm” để theo dõi.</li>
+        <li>Mở “Chatbot” để đặt câu hỏi.</li>
+        <li>Kiểm tra “Lịch sử gửi email”.</li>
+      </ol>
+    </section>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,0 C600,100 600,0 1200,100 L1200,0 L0,0 Z" fill="var(--light)"/></svg>
+    </div>
+
+    <!-- FAQ -->
+    <section id="faq" data-aos="fade-up">
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details><summary>Ứng dụng có mất phí không?</summary><p>Miễn phí toàn bộ chức năng cơ bản.</p></details>
+        <details><summary>Cần Internet để dùng?</summary><p>Có. OCR và chatbot yêu cầu mạng.</p></details>
+        <details><summary>Bảo mật dữ liệu thế nào?</summary><p>Dữ liệu mã hóa, tuân thủ GDPR và JWT.</p></details>
+      </div>
+    </section>
+
+    <div class="wave-divider">
+      <svg viewBox="0 0 1200 100" preserveAspectRatio="none"><path d="M0,0 C600,100 600,0 1200,100 L1200,0 L0,0 Z" fill="var(--light)"/></svg>
+    </div>
+
+    <!-- Testimonials -->
+    <section id="testimonials" data-aos="fade-up">
+      <h2>Phản hồi</h2>
+      <blockquote>“EDUSCAN giúp tôi tiết kiệm 80% thời gian nhập điểm.”<cite>– TS.Trần Đăng Hiếu</cite></blockquote>
+      <blockquote>“App rất dễ dùng và chính xác.”<cite>– Ths.Trần Thị Hào</cite></blockquote>
+    </section>
+
+    <!-- Liên hệ -->
+    <section id="contact" data-aos="fade-up">
+      <h2>Liên hệ & Hỗ trợ</h2>
+      <p>Email: <a href="mailto:support@eduscan.edu.vn">support@eduscan.edu.vn</a></p>
+      <p><a href="/docs/user-guide.pdf">Tài liệu hướng dẫn chi tiết</a></p>
+    </section>
+
+    <!-- Changelog -->
+    <section id="updates" data-aos="fade-up">
+      <h2>Cập nhật & Changelog</h2>
+      <ul>
+        <li><strong>v1.2.0</strong> (01/05/2025): Thêm email tự động.</li>
+        <li><strong>v1.1.0</strong> (15/04/2025): Cải thiện độ chính xác OCR.</li>
+        <li><strong>v1.0.0</strong> (20/04/2025): Ra mắt bản đầu tiên.</li>
+      </ul>
+    </section>
+
+    <footer data-aos="fade-up">
+      © 2025 EDUSCAN. <a href="/terms">Điều khoản</a> | <a href="/privacy">Chính sách</a>
+    </footer>
+  </div>
+
+  <!-- AOS & Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 600 });
+
+    // Theme toggle
+    const themeBtn = document.getElementById('theme-toggle');
+    themeBtn.onclick = () => {
+      document.documentElement.classList.toggle('dark');
+      themeBtn.textContent = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+    };
+
+    // Back to top
+    const backBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backBtn.classList.toggle('show', window.scrollY > 300);
+    });
+    backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const navList = document.querySelector('.nav-list');
+    navToggle.addEventListener('click', () => {
+      navList.classList.toggle('show');
+    });
+
+    function openApp() {
+      var ua = navigator.userAgent || navigator.vendor;
+      if (/android/i.test(ua)) {
+        // Android: Intent to package
+        window.location = "intent://open#Intent;scheme=eduscan;package=com.danghieu19224.EDU_Teacher_FE;end";
+      } else if (/iPad|iPhone|iPod/.test(ua)) {
+        // iOS: thử mở scheme, nếu 2s vẫn web thì redirect App Store
+        window.location = "eduscan://open";
+        setTimeout(function() {
+          window.location = "https://apps.apple.com/app/idYOUR_APP_ID";
+        }, 2000);
+      } else {
+        // Desktop / fallback
+        window.location = "/app";
+      }
+    }
+  </script>
+</body>
+</html>

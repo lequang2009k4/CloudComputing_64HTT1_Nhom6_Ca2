@@ -15,7 +15,7 @@ public class OddServer {
 
       OddService oddService = new OddServiceImpl();
     //  tạo một đối tượng thực sự có thể xử lý logic (ở xa): gọi là remote object.
-      Naming.rebind("rmi://192.168.1.7:1099/OddService", oddService);
+      Naming.rebind("rmi://192.168.135.143:1099/OddService", oddService);
 
       System.out.println("Service dang chay...");
     } catch (Exception e) {
